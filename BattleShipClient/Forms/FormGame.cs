@@ -92,7 +92,7 @@ namespace BattleShipClient
         }
         private void SetShips()
         {
-            GenerateField("P1",204, 10);
+            GenerateField("P1",204, 275);
             setDefaultValuesInMap(false, yourMap);
             for (int i = 0; i < yourMapTmp.GetLength(1); i++)
             {
@@ -375,7 +375,7 @@ namespace BattleShipClient
             }
             matched.Visible = true;
             //for enemy
-            GenerateField("P2", 370, 10);
+            GenerateField("P2", 370, 275);
             //Make visible mast tip panel
             PMast.Visible = true;
             Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
@@ -414,6 +414,7 @@ namespace BattleShipClient
             char comm = (char)0;
             string message = comm + " " + Program.userLogin + " " + Program.enemyNick + " <EOF>";
             Program.client.Send(message);
+            BPlay.Text = "Wait opponent ....";
             enemyGiveUpBeforeStart = true;
             //Receive answer in Program's thread
             clickedButton.Enabled = false;
@@ -447,6 +448,7 @@ namespace BattleShipClient
                 {
                     //Send Hit
                     message = (char)5 + " " + enemyNick + " <EOF>";
+
                     Program.client.Send(message);
                     //Your turn
                     ((Panel)this.Controls.Find("P2", true).FirstOrDefault()).Enabled = false;
@@ -520,6 +522,7 @@ namespace BattleShipClient
         {
             this.Text = "Battleship - you're playing with " + enemyNick;
             SetShips();
+            timer1.Start();
             
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -542,6 +545,39 @@ namespace BattleShipClient
             }
             //User Go to EnemySelectionPanel
             DialogResult = DialogResult.Yes;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
+            bool checkResult = false;
+            Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
+            checkResult = Check1CellShip();
+            if (checkResult == false)
+            {
+                return;
+            }
+            checkResult = Check2CellShip();
+            if (checkResult == false)
+            {
+                return;
+            }
+            checkResult = Check3CellShip();
+            if (checkResult == false)
+            {
+                return;
+            }
+            checkResult = Check4CellShip();
+            if (checkResult == false)
+            {
+                return;
+            }
+            else if (BPlay.Text != "Wait opponent ....")
+            {
+                BPlay.BackColor = Color.Green;
+                BPlay.Text = "Start Play";
+            }           
+
         }
     }
 }

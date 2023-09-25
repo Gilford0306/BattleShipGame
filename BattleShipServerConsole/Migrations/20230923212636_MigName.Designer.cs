@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BattleShipServerConsole.Migrations
 {
     [DbContext(typeof(MyApplicationContext))]
-    [Migration("20230921125642_MigName")]
+    [Migration("20230923212636_MigName")]
     partial class MigName
     {
         /// <inheritdoc />

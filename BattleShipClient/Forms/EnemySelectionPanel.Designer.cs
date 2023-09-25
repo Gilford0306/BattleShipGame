@@ -30,36 +30,25 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EnemySelectionPanel));
-            this.LNick = new System.Windows.Forms.Label();
             this.BConnect = new System.Windows.Forms.Button();
             this.DGVAvailableEnemies = new System.Windows.Forms.DataGridView();
             this.IPAndPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EnemyNick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TBSearch = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.DGVAvailableEnemies)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // LNick
-            // 
-            this.LNick.AutoSize = true;
-            this.LNick.Font = new System.Drawing.Font("Segoe Print", 9F, System.Drawing.FontStyle.Bold);
-            this.LNick.Location = new System.Drawing.Point(181, 5);
-            this.LNick.Name = "LNick";
-            this.LNick.Size = new System.Drawing.Size(98, 21);
-            this.LNick.TabIndex = 2;
-            this.LNick.Text = "Search enemy:";
             // 
             // BConnect
             // 
-            this.BConnect.BackColor = System.Drawing.Color.Maroon;
-            this.BConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.BConnect.BackColor = System.Drawing.Color.Navy;
+            this.BConnect.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.BConnect.ForeColor = System.Drawing.Color.White;
-            this.BConnect.Location = new System.Drawing.Point(182, 265);
+            this.BConnect.Location = new System.Drawing.Point(65, 272);
             this.BConnect.Name = "BConnect";
-            this.BConnect.Size = new System.Drawing.Size(266, 23);
+            this.BConnect.Size = new System.Drawing.Size(252, 63);
             this.BConnect.TabIndex = 6;
-            this.BConnect.Text = "Select enemy and play!";
+            this.BConnect.Text = "Invite player ?";
             this.BConnect.UseVisualStyleBackColor = false;
             this.BConnect.Click += new System.EventHandler(this.BConnect_Click);
             // 
@@ -68,11 +57,13 @@
             this.DGVAvailableEnemies.AllowUserToAddRows = false;
             this.DGVAvailableEnemies.AllowUserToDeleteRows = false;
             this.DGVAvailableEnemies.AllowUserToResizeRows = false;
+            this.DGVAvailableEnemies.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.DGVAvailableEnemies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DGVAvailableEnemies.BackgroundColor = System.Drawing.SystemColors.Control;
             this.DGVAvailableEnemies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -84,18 +75,18 @@
             this.EnemyNick});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.DGVAvailableEnemies.DefaultCellStyle = dataGridViewCellStyle2;
-            this.DGVAvailableEnemies.Location = new System.Drawing.Point(182, 33);
+            this.DGVAvailableEnemies.Location = new System.Drawing.Point(65, 167);
             this.DGVAvailableEnemies.MultiSelect = false;
             this.DGVAvailableEnemies.Name = "DGVAvailableEnemies";
             this.DGVAvailableEnemies.ReadOnly = true;
             this.DGVAvailableEnemies.RowHeadersVisible = false;
-            this.DGVAvailableEnemies.Size = new System.Drawing.Size(266, 226);
+            this.DGVAvailableEnemies.Size = new System.Drawing.Size(252, 71);
             this.DGVAvailableEnemies.TabIndex = 7;
             this.DGVAvailableEnemies.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVAvailableEnemies_CellClick);
             // 
@@ -108,33 +99,30 @@
             // 
             // EnemyNick
             // 
-            this.EnemyNick.HeaderText = "Enemy nick";
+            this.EnemyNick.HeaderText = "Now online";
             this.EnemyNick.Name = "EnemyNick";
             this.EnemyNick.ReadOnly = true;
             this.EnemyNick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EnemyNick.Width = 249;
             // 
-            // TBSearch
+            // pictureBox1
             // 
-            this.TBSearch.BackColor = System.Drawing.Color.White;
-            this.TBSearch.Location = new System.Drawing.Point(282, 7);
-            this.TBSearch.MaxLength = 16;
-            this.TBSearch.Name = "TBSearch";
-            this.TBSearch.Size = new System.Drawing.Size(165, 20);
-            this.TBSearch.TabIndex = 8;
-            this.TBSearch.TextChanged += new System.EventHandler(this.SearchEnemy);
+            this.pictureBox1.Image = global::BattleShipClient.Properties.Resources.Ramsey_PRO_05_23_Hero;
+            this.pictureBox1.Location = new System.Drawing.Point(34, 26);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(311, 110);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
             // 
             // EnemySelectionPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(459, 300);
-            this.Controls.Add(this.TBSearch);
+            this.ClientSize = new System.Drawing.Size(383, 390);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.DGVAvailableEnemies);
             this.Controls.Add(this.BConnect);
-            this.Controls.Add(this.LNick);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "EnemySelectionPanel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -142,17 +130,16 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CloseApp);
             this.Load += new System.EventHandler(this.EnemySelectionPanel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DGVAvailableEnemies)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label LNick;
         private System.Windows.Forms.Button BConnect;
         private System.Windows.Forms.DataGridViewTextBoxColumn IPAndPort;
         private System.Windows.Forms.DataGridViewTextBoxColumn EnemyNick;
-        private System.Windows.Forms.TextBox TBSearch;
         public System.Windows.Forms.DataGridView DGVAvailableEnemies;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

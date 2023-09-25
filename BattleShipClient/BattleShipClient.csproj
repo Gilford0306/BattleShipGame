@@ -65,22 +65,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnemySelectionPanel.cs">
+    <Compile Include="Forms\EnemySelectionPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EnemySelectionPanel.Designer.cs">
+    <Compile Include="Forms\EnemySelectionPanel.Designer.cs">
       <DependentUpon>EnemySelectionPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormGame.cs">
+    <Compile Include="Forms\FormGame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormGame.Designer.cs">
+    <Compile Include="Forms\FormGame.Designer.cs">
       <DependentUpon>FormGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="OfferingGame.cs">
+    <Compile Include="Forms\OfferingGame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OfferingGame.Designer.cs">
+    <Compile Include="Forms\OfferingGame.Designer.cs">
       <DependentUpon>OfferingGame.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -90,20 +90,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ServerConnectionPanel.cs">
+    <Compile Include="Forms\ServerConnectionPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ServerConnectionPanel.Designer.cs">
+    <Compile Include="Forms\ServerConnectionPanel.Designer.cs">
       <DependentUpon>ServerConnectionPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="SynchronousSocketClient.cs" />
-    <EmbeddedResource Include="EnemySelectionPanel.resx">
+    <Compile Include="SocketClient.cs" />
+    <EmbeddedResource Include="Forms\EnemySelectionPanel.resx">
       <DependentUpon>EnemySelectionPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormGame.resx">
+    <EmbeddedResource Include="Forms\FormGame.resx">
       <DependentUpon>FormGame.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OfferingGame.resx">
+    <EmbeddedResource Include="Forms\OfferingGame.resx">
       <DependentUpon>OfferingGame.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -111,7 +111,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="ServerConnectionPanel.resx">
+    <EmbeddedResource Include="Forms\ServerConnectionPanel.resx">
       <DependentUpon>ServerConnectionPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -138,6 +138,18 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\360_F_592317043_rOOpTliZqnmqLi3YwWxGIgVyyfk5nMaM.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ramsey-PRO-05-23_Hero.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1_xVBrq2LQs4Xd8zXkCxyzyA.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\how-to-play-a-battleship-in-world-of-warships-770x433.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

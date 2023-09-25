@@ -9,19 +9,16 @@ using System.Windows.Forms;
 
 namespace BattleShipClient
 {
-    class SynchronousSocketClient
+    class SocketClient
     {
-        //My socket to communique with server
         public Socket socket;
-        //Data buffer for incoming data from server
         byte[] bytes;
-        //Buffer to store the data received from enemies
-        private byte[] byteData = new byte[1024];
-        //If I have set ships and click Start Game
-        bool iAmReady = false;
-        //If I'am playing game
-        bool iamBusy = false; 
-        public SynchronousSocketClient(string AddressIP)
+        //private byte[] byteData = new byte[1024];
+        ////If I have set ships and click Start Game
+        //bool iAmReady = false;
+        ////If I'am playing game
+        //bool iamBusy = false; 
+        public SocketClient(string AddressIP)
         {
             IPEndPoint serverRemoteEP = new IPEndPoint(IPAddress.Parse(AddressIP), 11000);
 
@@ -32,16 +29,16 @@ namespace BattleShipClient
             {
                 socket.Connect(serverRemoteEP);
             }
-            catch (ArgumentNullException ane)
-            {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-                throw;
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine("SocketException : {0}", se.ToString());
-                throw;
-            }
+            //catch (ArgumentNullException ane)
+            //{
+            //    Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+            //    throw;
+            //}
+            //catch (SocketException se)
+            //{
+            //    Console.WriteLine("SocketException : {0}", se.ToString());
+            //    throw;
+            //}
             catch (Exception e)
             {
                 Console.WriteLine("Unexpected exception : {0}", e.ToString());
@@ -57,24 +54,13 @@ namespace BattleShipClient
             {
                 while (!answer.Contains("<EOF>"))
                 {
-                    // Receive the response from the remote device.
                     bytesRec = socket.Receive(bytes);
                     answer += Encoding.ASCII.GetString(bytes, 0, bytesRec);
                 }
             }
-            catch (ArgumentNullException ane)
-            {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-                throw;
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine("SocketException : {0}", se.ToString());
-                throw;
-            }
             catch (Exception e)
             {
-                Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                Console.WriteLine(e.ToString());
                 throw;
             }
             return answer;
@@ -89,23 +75,12 @@ namespace BattleShipClient
                 // Send the data through the socket.
                 int bytesSent = socket.Send(msg);
             }
-            catch (ArgumentNullException ane)
-            {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-                throw;
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine("SocketException : {0}", se.ToString());
-                throw;
-            }
             catch (Exception e)
             {
                 Console.WriteLine("Unexpected exception : {0}", e.ToString());
                 throw;
             }
         }
-
         public void Disconnect()
         {
             try
@@ -114,22 +89,12 @@ namespace BattleShipClient
                 socket.Shutdown(SocketShutdown.Both);
                 socket.Close();
             }
-            catch (ArgumentNullException ane)
-            {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-                throw;
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine("SocketException : {0}", se.ToString());
-                throw;
-            }
+
             catch (Exception e)
             {
                 Console.WriteLine("Unexpected exception : {0}", e.ToString());
                 throw;
             }
         }
-        //Messages to send
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleShipServerConsole.Classes
 {
-    class Shoot
+    class Message
     {
         public static string getBinaryMessage(string message)
         {

@@ -22,17 +22,17 @@ namespace BattleShipClient
 
         private void BYes_Click(object sender, EventArgs e)
         {
-            if (CBEneNicks.Text == "")
-            {
-                MessageBox.Show("You must select enemy or click No", "Error!");
-            }
-            else
-            {
-                //Get recipient ID from Combobox
+            //if (CBEneNicks.Text == "")
+            //{
+            //    MessageBox.Show("You must select enemy or click No", "Error!");
+            //}
+            //else
+            //{
+
                 Program.enemySelect.enemyNick = CBEneNicks.SelectedValue.ToString();
                 Program.enemyNick = CBEneNicks.SelectedValue.ToString();
                 DialogResult = DialogResult.Yes;
-            }
+            //}
         }
 
         private void BNo_Click(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace BattleShipClient
         private void OfferingGame_Load(object sender, EventArgs e)
         {
             List<string> eNicks = enemiesNicks.Split(' ').ToList();
-            eNicks.RemoveAt(eNicks.Count()-1); //EOF
+            eNicks.RemoveAt(eNicks.Count() - 1); //EOF
             eNicks.RemoveAt(0);//communique value
 
             CBEneNicks.DataSource = eNicks;

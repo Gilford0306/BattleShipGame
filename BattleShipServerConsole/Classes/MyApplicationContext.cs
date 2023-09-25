@@ -13,7 +13,7 @@ namespace BattleShipServerConsole.Classes
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-N6GODSK;Database=GameBS_DB;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-D3D9JEM;Database=GameBS_DB;Trusted_Connection=True;TrustServerCertificate=True;");
         }
     }
 }

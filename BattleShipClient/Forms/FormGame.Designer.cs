@@ -1,4 +1,6 @@
-﻿namespace BattleShipClient
+﻿using System.Drawing;
+
+namespace BattleShipClient
 {
     partial class FormGame
     {
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.BMastx1 = new System.Windows.Forms.Button();
             this.Lx4 = new System.Windows.Forms.Label();
             this.BMastx21 = new System.Windows.Forms.Button();
@@ -43,9 +46,11 @@
             this.BMastx43 = new System.Windows.Forms.Button();
             this.Lx1 = new System.Windows.Forms.Label();
             this.PMast = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.PanelYourShip = new System.Windows.Forms.Panel();
             this.LSetInfo = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.LSetMast2 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
@@ -59,10 +64,11 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.BPlay = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.PMast.SuspendLayout();
             this.PanelYourShip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // BMastx1
@@ -236,11 +242,22 @@
             this.PMast.Controls.Add(this.BMastx44);
             this.PMast.Controls.Add(this.BMastx42);
             this.PMast.Controls.Add(this.Lx3);
-            this.PMast.Location = new System.Drawing.Point(271, 12);
+            this.PMast.Location = new System.Drawing.Point(266, 293);
             this.PMast.Name = "PMast";
             this.PMast.Size = new System.Drawing.Size(96, 226);
             this.PMast.TabIndex = 26;
             this.PMast.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(93, 19);
+            this.label1.TabIndex = 38;
+            this.label1.Text = "Enemy ships";
             // 
             // PanelYourShip
             // 
@@ -259,7 +276,7 @@
             this.PanelYourShip.Controls.Add(this.button4);
             this.PanelYourShip.Controls.Add(this.button6);
             this.PanelYourShip.Controls.Add(this.button5);
-            this.PanelYourShip.Location = new System.Drawing.Point(51, 12);
+            this.PanelYourShip.Location = new System.Drawing.Point(46, 293);
             this.PanelYourShip.Name = "PanelYourShip";
             this.PanelYourShip.Size = new System.Drawing.Size(111, 242);
             this.PanelYourShip.TabIndex = 27;
@@ -285,6 +302,17 @@
             this.button1.Size = new System.Drawing.Size(15, 15);
             this.button1.TabIndex = 27;
             this.button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Navy;
+            this.button2.Enabled = false;
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.CornflowerBlue;
+            this.button2.Location = new System.Drawing.Point(44, 34);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(15, 15);
+            this.button2.TabIndex = 24;
+            this.button2.UseVisualStyleBackColor = false;
             // 
             // LSetMast2
             // 
@@ -420,44 +448,40 @@
             // 
             // BPlay
             // 
-            this.BPlay.BackColor = System.Drawing.Color.IndianRed;
+            this.BPlay.BackColor = System.Drawing.Color.Red;
             this.BPlay.Font = new System.Drawing.Font("Segoe Print", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.BPlay.ForeColor = System.Drawing.Color.White;
-            this.BPlay.Location = new System.Drawing.Point(181, 293);
+            this.BPlay.Location = new System.Drawing.Point(149, 541);
             this.BPlay.Name = "BPlay";
             this.BPlay.Size = new System.Drawing.Size(186, 50);
             this.BPlay.TabIndex = 28;
-            this.BPlay.Text = "Play";
+            this.BPlay.Text = "Set your ship";
             this.BPlay.UseVisualStyleBackColor = false;
             this.BPlay.Click += new System.EventHandler(this.playbuttonClick);
             // 
-            // button2
+            // pictureBox1
             // 
-            this.button2.BackColor = System.Drawing.Color.Navy;
-            this.button2.Enabled = false;
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.CornflowerBlue;
-            this.button2.Location = new System.Drawing.Point(44, 34);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(15, 15);
-            this.button2.TabIndex = 24;
-            this.button2.UseVisualStyleBackColor = false;
+            this.pictureBox1.BackColor = System.Drawing.Color.RoyalBlue;
+            this.pictureBox1.Image = global::BattleShipClient.Properties.Resources.how_to_play_a_battleship_in_world_of_warships_770x433;
+            this.pictureBox1.Location = new System.Drawing.Point(32, 13);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(560, 239);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
             // 
-            // label1
+            // timer1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 19);
-            this.label1.TabIndex = 38;
-            this.label1.Text = "Enemy ships";
+            this.timer1.Interval = 2000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 349);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(624, 618);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.BPlay);
             this.Controls.Add(this.PanelYourShip);
             this.Controls.Add(this.PMast);
@@ -472,6 +496,7 @@
             this.PMast.PerformLayout();
             this.PanelYourShip.ResumeLayout(false);
             this.PanelYourShip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -510,6 +535,8 @@
         private System.Windows.Forms.Button BPlay;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

@@ -12,12 +12,10 @@ namespace BattleShipClient
     {
         public static string userLogin;
         public static string serverAddress;
-        public static SynchronousSocketClient client;
+        public static SocketClient client;
         public static EnemySelectionPanel enemySelect;
         public static FormGame main;
         public static string enemyNick;
-        //public static int dialog; //0 - No, 1 -Yes, 2 - OK, -1 - Cancel;
-        //Thread to receiving messages
         public static volatile bool isThreadRunning = false;
 
         /// <summary>
@@ -32,11 +30,9 @@ namespace BattleShipClient
             userLogin = "";
             serverAddress = "";
 
-
+            // основная логика подключения клиента 
             ServerConnectionPanel servConn;
-
             DialogResult dialogResult = DialogResult.No;
-            //dialog = 0;
             while (dialogResult != DialogResult.Cancel/*dialog != -1*/)
             {
                 if (dialogResult == DialogResult.No/*dialog==0*/)
@@ -66,7 +62,7 @@ namespace BattleShipClient
                 }
             }
         }
-        public static void ReceivingMessages()
+        public static void ReceivingMessages() // основная логика игры
         {
             while (isThreadRunning == true)
             {
@@ -75,6 +71,7 @@ namespace BattleShipClient
                     var answer = client.Receive();
                     switch (answer[0])
                     {
+
                         //EnemySelection
                         //SendEnemies
                         case (char)12:
@@ -163,11 +160,6 @@ namespace BattleShipClient
                                             client.Send(message);
                                         }
                                         enemySelect.updateTimer.Enabled = true;
-                                        //if (enemySelect.updateTimer.Enabled == false)
-                                        //{
-                                        //    enemySelect.updateTimer.Enabled = true;
-                                        //}
-                                        //Program.dialog = 1;
                                     }
                                 }; enemySelect.Invoke(inv2);
 

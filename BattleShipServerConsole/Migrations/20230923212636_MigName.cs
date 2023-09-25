@@ -28,7 +28,8 @@ namespace BattleShipServerConsole.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "Moves");
+            migrationBuilder.DropTable(
+                name: "Moves");
         }
     }
 }
