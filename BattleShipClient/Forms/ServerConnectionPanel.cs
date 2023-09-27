@@ -25,7 +25,7 @@ namespace BattleShipClient
                 //Set login
                 Program.client = new SocketClient(TBServerIP.Text);
                 char comm = (char)11;
-                string message = comm + " " + TBNick.Text + " <EOF>";
+                string message = comm + " " + "test" + " <EOF>";
                 Program.client.Send(message);
                 //Receive answer
                 var answer = Program.client.Receive()[0];

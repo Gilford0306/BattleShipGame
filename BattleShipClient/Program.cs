@@ -33,7 +33,7 @@ namespace BattleShipClient
             // основная логика подключения клиента 
             ServerConnectionPanel servConn;
             DialogResult dialogResult = DialogResult.No;
-            while (dialogResult != DialogResult.Cancel/*dialog != -1*/)
+            while (dialogResult != DialogResult.Cancel)
             {
                 if (dialogResult == DialogResult.No/*dialog==0*/)
                 {
@@ -209,7 +209,7 @@ namespace BattleShipClient
                                 }; main.Invoke(inv);
                                 break;
                             }
-                        //Enemy Gave Up in  Form 1
+                        //Enemy Gave Up in  FormGame
                         case (char)17:
                             {
                                 MethodInvoker inv = delegate

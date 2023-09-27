@@ -288,7 +288,7 @@ namespace BattleShipServerConsole.Classes
                                 new AsyncCallback(ReadCallback), state);
                                 using (MyApplicationContext context = new MyApplicationContext())
                                 {
-                                    if (parameters[1] == "Player 1")
+                                    if (parameters[1] == "Player1")
                                         context.Moves.Add(new Move() { Description = "Player 2 is miss", Date = DateTime.Now.ToString() });
                                     else
                                         context.Moves.Add(new Move() { Description = "Player 1 is miss", Date = DateTime.Now.ToString() });
@@ -310,7 +310,7 @@ namespace BattleShipServerConsole.Classes
                                 new AsyncCallback(ReadCallback), state);
                                 using (MyApplicationContext context = new MyApplicationContext())
                                 {
-                                    if (parameters[1] == "Player 1")
+                                    if (parameters[1] == "Player1")
                                         context.Moves.Add(new Move() { Description = "Player 2 is hit", Date = DateTime.Now.ToString() });
                                     else
                                         context.Moves.Add(new Move() { Description = "Player 1 is hit", Date = DateTime.Now.ToString() });
@@ -328,17 +328,31 @@ namespace BattleShipServerConsole.Classes
                                     string message = ((char)6).ToString() + " " + x + " " + y + " <EOF>";
                                     Send(Program.loggedplayingNicks[enemyNick], message);
                                 }
+
+                                char fieldy = (char)(65 + int.Parse(y));
+                                int fieldx = int.Parse(x) + 1;
+                                using (MyApplicationContext context = new MyApplicationContext())
+                                {
+                                    if (parameters[1] == "Player1")
+                                        context.Moves.Add(new Move() { Description = $"Player 1 shoot in {fieldx} - {fieldy} field ", Date = DateTime.Now.ToString() });
+                                    else
+                                        context.Moves.Add(new Move() { Description = $"Player 2 shoot in {fieldx} - {fieldy} field", Date = DateTime.Now.ToString() });
+                                    context.SaveChanges();
+                                }
                                 state.buffer = new byte[1024];
                                 state.sb = new StringBuilder();
                                 handler.BeginReceive(state.buffer, 0, ReadObject.BufferSize, 0,
                                 new AsyncCallback(ReadCallback), state);
+
+
+
+
+
                                 break;
                             }
                         case 7://Запрос от  соперника
                             {
-                                //Get nick
                                 nick = parameters[1];
-                                //enemiesoffers
                                 if (Program.enemiesoffers.ContainsKey(nick))
                                 {
                                     string enemiesString = "";
@@ -361,9 +375,8 @@ namespace BattleShipServerConsole.Classes
                             }
                         case 8://Запрос от игрока
                             {
-                                //who offers (enemy)
+
                                 nick = parameters[1];
-                                //whom he offers
                                 enemyNick = parameters[2];
                                 bool nickOffers = false;
                                 if (Program.enemiesoffers.ContainsKey(nick))
@@ -391,7 +404,16 @@ namespace BattleShipServerConsole.Classes
                                 new AsyncCallback(ReadCallback), state);
                                 break;
                             }
-                        case 9: //Промах
+                        case 9: //Enemy declined my offer to play
+                            {
+                                Send(handler, ((char)10).ToString() + " <EOF>");
+                                state.buffer = new byte[1024];
+                                state.sb = new StringBuilder();
+                                handler.BeginReceive(state.buffer, 0, ReadObject.BufferSize, 0,
+                                new AsyncCallback(ReadCallback), state);
+                                break;
+                            }
+                        case 10: //Enemy accepted my offer to play
                             {
                                 Send(handler, ((char)10).ToString() + " <EOF>");
 
@@ -401,17 +423,7 @@ namespace BattleShipServerConsole.Classes
                                 new AsyncCallback(ReadCallback), state);
                                 break;
                             }
-                        case 10: //Попадание
-                            {
-                                Send(handler, ((char)10).ToString() + " <EOF>");
-
-                                state.buffer = new byte[1024];
-                                state.sb = new StringBuilder();
-                                handler.BeginReceive(state.buffer, 0, ReadObject.BufferSize, 0,
-                                new AsyncCallback(ReadCallback), state);
-                                break;
-                            }
-                        case 11: //Присоединение
+                        case 11: //Conecting
                             {
                                 //Get nick
                                 if (Program.loggedNicks.Count==0)
@@ -419,27 +431,15 @@ namespace BattleShipServerConsole.Classes
                                 nick = "Player1";
                                 else
                                 nick = "Player2";
-                                //Get IP
                                 IPport = handler.RemoteEndPoint.ToString().Split(':')[0]; //get IP
-                                //Get port No
                                 port = parameters[2];
                                 IPport += ":" + port;
-                                //Check if nick is in dictionary
-                                //if (Program.loggedNicks.ContainsKey(nick)) //nick is occupied
-                                //{
-                                //    //Send Fail
-                                //    Send(handler, ((char)9).ToString() + " <EOF>");
-                                //}
-                                //else //User can join to server
-                                //{
-                                    //Add to players dictionary <nick, IP>
-                                    Program.loggedNicks.Add(nick, handler);
-                                    //If everything OK send OK
-                                    if (nick == "Player1")
-                                    Send(handler, ((char)10).ToString() + " <EOF>");
-                                    else 
-                                    Send(handler, ((char)21).ToString() + " <EOF>");
-                                //}
+                                Program.loggedNicks.Add(nick, handler);
+                                if (nick == "Player1")
+                                Send(handler, ((char)10).ToString() + " <EOF>");
+                                else 
+                                Send(handler, ((char)21).ToString() + " <EOF>");
+                                
 
                                 state.buffer = new byte[1024];
                                 state.sb = new StringBuilder();
@@ -510,13 +510,6 @@ namespace BattleShipServerConsole.Classes
                                 nick = parameters[1];
                                 //Check if nick is in dict
                                 result = Program.loggedNicks.ContainsKey(nick);
-                                //if (result == false) //If not in dictionary send Fail Communique to person
-                                //{
-                                //    Send(handler, ((char)12).ToString() + " <EOF>");
-                                //}
-                                //else
-                                //{
-                                    //Get players from dictionary: only nicks!
                                     players = "";
                                     foreach (var item in Program.loggedNicks)
                                     {

@@ -13,18 +13,12 @@ namespace BattleShipClient
     {
         public Socket socket;
         byte[] bytes;
-        //private byte[] byteData = new byte[1024];
-        ////If I have set ships and click Start Game
-        //bool iAmReady = false;
-        ////If I'am playing game
-        //bool iamBusy = false; 
         public SocketClient(string AddressIP)
         {
             IPEndPoint serverRemoteEP = new IPEndPoint(IPAddress.Parse(AddressIP), 11000);
 
-            // Create a TCP/IP  socket.  
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            // Connect the socket to the remote endpoint. Catch any errors.
+
             try
             {
                 socket.Connect(serverRemoteEP);

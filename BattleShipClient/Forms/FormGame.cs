@@ -16,8 +16,6 @@ namespace BattleShipClient
         public bool enemyGiveUpBeforeStart = false;
         public bool normalEnd = false;
         public Button clickedButton;
-
-        //mast not sunk
         public int masts = 20;
         public FormGame(string enemyNick)
         {
@@ -29,34 +27,78 @@ namespace BattleShipClient
         public bool[,] yourMapTmp = new bool[10, 10];
         public bool[,] enemyMap = new bool[10, 10];
         List<Button> selectedButtons = new List<Button>();
-        private void setDefaultValuesInMap(bool value, bool [,] Map)
+        //======================================== Prepare logic
+        private void Form1_Load(object sender, EventArgs e)
         {
-            for (int i = 0; i < Map.GetLength(1); i++)
+            this.Text = "Battleship - you're playing with " + enemyNick;
+            SetShips();
+            timer1.Start();
+
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
+            bool checkResult = false;
+            Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
+            checkResult = Check1CellShip();
+            if (checkResult == false)
             {
-                for (int j = 0; j < Map.GetLength(0); j++)
+                return;
+            }
+            checkResult = Check2CellShip();
+            if (checkResult == false)
+            {
+                return;
+            }
+            checkResult = Check3CellShip();
+            if (checkResult == false)
+            {
+                return;
+            }
+            checkResult = Check4CellShip();
+            if (checkResult == false)
+            {
+                return;
+            }
+            else if (BPlay.Text != "Wait opponent ....")
+            {
+                BPlay.BackColor = Color.Green;
+                BPlay.Text = "Start Play";
+            }
+
+        }
+        private void SetShips()
+        {
+            timer1.Stop();
+            GenerateField("P1", 204, 275);
+            setDefaultValuesInMap(false, yourMap);
+            for (int i = 0; i < yourMapTmp.GetLength(1); i++)
+            {
+                for (int j = 0; j < yourMapTmp.GetLength(0); j++)
                 {
-                    Map[i, j] = value;
+                    yourMapTmp[i, j] = false;
                 }
             }
         }
+
         private void GenerateField(string name, int xStartPos, int yStartPos)
         {
             Panel buttonPanel = new Panel();
             buttonPanel.Name = name;
-            buttonPanel.Size=new Size(231, 231);
-            int xButtonSize = 20;
-            int yButtonSize = 20;
+            buttonPanel.Size = new Size(231, 231);
+            int xButtonSize = 21;
+            int yButtonSize = 21;
             for (int i = 0; i < 11; i++)
             {
                 for (int j = 0; j < 11; j++)
                 {
-                    if (i == 0 && j == 0) continue; 
+                    if (i == 0 && j == 0) continue;
                     Button button = new Button();
                     buttonPanel.Controls.Add(button);
-                    button.Location = new System.Drawing.Point(j* xButtonSize, i * yButtonSize);
+                    button.Location = new System.Drawing.Point(j * xButtonSize, i * yButtonSize);
                     button.Size = new Size(xButtonSize, yButtonSize);
                     button.ForeColor = System.Drawing.Color.Navy;
-                    if (i>0 && j>0) //double digits: 00, 01, ..., 99
+                    if (i > 0 && j > 0) 
                     {
                         button.Name = (i - 1).ToString() + (j - 1).ToString();
                         button.Font = new Font(button.Font.FontFamily, 6);
@@ -64,7 +106,7 @@ namespace BattleShipClient
                         {
                             button.Click += new System.EventHandler(this.setMastbuttonClick);
                         }
-                        else if (name== "P2")
+                        else if (name == "P2")
                         {
                             button.Click += new System.EventHandler(this.buttonClick);
                         }
@@ -75,32 +117,46 @@ namespace BattleShipClient
                         if (i == 0 && j > 0) //letters: A, B, ..., J
                         {
                             button.Text = ((char)(64 + j)).ToString();
-                            button.Name= ((char)(64 + j)).ToString();
+                            button.Name = ((char)(64 + j)).ToString();
                             button.Font = new Font(button.Font.FontFamily, 6);
                         }
-                        else if (i!=0 || j!=0) // digits: 1, 2, ..., 10
+                        else if (i != 0 || j != 0) // digits: 1, 2, ..., 10
                         {
                             button.Text = i.ToString();
-                            button.Name= "L" + i.ToString();
+                            button.Name = "L" + i.ToString();
                             button.Font = new Font(button.Font.FontFamily, 6);
                         }
-                    }          
+                    }
                 }
             }
             this.Controls.Add(buttonPanel);
             buttonPanel.Location = new Point(xStartPos, yStartPos);
         }
-        private void SetShips()
+        private void setDefaultValuesInMap(bool value, bool [,] Map)
         {
-            GenerateField("P1",204, 275);
-            setDefaultValuesInMap(false, yourMap);
-            for (int i = 0; i < yourMapTmp.GetLength(1); i++)
+            for (int i = 0; i < Map.GetLength(1); i++)
             {
-                for (int j = 0; j < yourMapTmp.GetLength(0); j++)
+                for (int j = 0; j < Map.GetLength(0); j++)
                 {
-                    yourMapTmp[i, j] = false;
+                    Map[i, j] = value;
                 }
             }
+        }
+        public void PrepareBattleField()
+        {
+
+            PanelYourShip.Visible = false;
+            Panel matched = (Panel)this.Controls.Find("P1", true).FirstOrDefault();
+            matched.Visible = false;
+            matched.Enabled = false;
+            if (matched != null)
+            {
+                matched.Location = new Point(matched.Location.X - 164, matched.Location.Y);
+            }
+            matched.Visible = true;
+            GenerateField("P2", 370, 275);
+            PMast.Visible = true;// field enemy
+            Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
         }
         private void DisableOrEnableButtonIfExists(Panel panel, int x1, int y1, bool DisOrEn)
         {
@@ -361,25 +417,8 @@ namespace BattleShipClient
             }
             if (counter < 1) return false;
             return true;
-        }       
-        public void PrepareBattleField()
-        {         
-
-            PanelYourShip.Visible = false;
-            Panel matched = (Panel)this.Controls.Find("P1", true).FirstOrDefault();
-            matched.Visible = false;
-            matched.Enabled = false;
-            if (matched != null)
-            {
-                matched.Location = new Point(matched.Location.X - 164, matched.Location.Y);
-            }
-            matched.Visible = true;
-            //for enemy
-            GenerateField("P2", 370, 275);
-            //Make visible mast tip panel
-            PMast.Visible = true;
-            Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
         }
+        //======================================== Game logic
         void playbuttonClick(object sender, EventArgs e)
         {
             clickedButton = (Button)sender;
@@ -387,29 +426,29 @@ namespace BattleShipClient
             bool checkResult = false;
             Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
             checkResult=Check1CellShip();
-            if (checkResult==false)
-            {
-                MessageBox.Show("You have set wrong number 1 cell ship", "Error");
-                return;
-            }
-            checkResult = Check2CellShip();
-            if (checkResult == false)
-            {
-                MessageBox.Show("You have set wrong number 2 cell ship", "Error");
-                return;
-            }
-            checkResult = Check3CellShip();
-            if (checkResult == false)
-            {
-                MessageBox.Show("You have set wrong number 3 cell ship", "Error");
-                return;
-            }
-            checkResult = Check4CellShip();
-            if (checkResult == false)
-            {
-                MessageBox.Show("You have set wrong number 4 cell ship", "Error");
-                return;
-            }
+            //if (checkResult==false)
+            //{
+            //    MessageBox.Show("You have set wrong number 1 cell ship", "Error");
+            //    return;
+            //}
+            //checkResult = Check2CellShip();
+            //if (checkResult == false)
+            //{
+            //    MessageBox.Show("You have set wrong number 2 cell ship", "Error");
+            //    return;
+            //}
+            //checkResult = Check3CellShip();
+            //if (checkResult == false)
+            //{
+            //    MessageBox.Show("You have set wrong number 3 cell ship", "Error");
+            //    return;
+            //}
+            //checkResult = Check4CellShip();
+            //if (checkResult == false)
+            //{
+            //    MessageBox.Show("You have set wrong number 4 cell ship", "Error");
+            //    return;
+            //}
 
             char comm = (char)0;
             string message = comm + " " + Program.userLogin + " " + Program.enemyNick + " <EOF>";
@@ -518,13 +557,7 @@ namespace BattleShipClient
             Program.client.Send(message);
             //Get answer form Program's thread       
         }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            this.Text = "Battleship - you're playing with " + enemyNick;
-            SetShips();
-            timer1.Start();
-            
-        }
+
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (enemyGiveUpBeforeStart == false)
@@ -547,37 +580,5 @@ namespace BattleShipClient
             DialogResult = DialogResult.Yes;
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-
-            bool checkResult = false;
-            Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
-            checkResult = Check1CellShip();
-            if (checkResult == false)
-            {
-                return;
-            }
-            checkResult = Check2CellShip();
-            if (checkResult == false)
-            {
-                return;
-            }
-            checkResult = Check3CellShip();
-            if (checkResult == false)
-            {
-                return;
-            }
-            checkResult = Check4CellShip();
-            if (checkResult == false)
-            {
-                return;
-            }
-            else if (BPlay.Text != "Wait opponent ....")
-            {
-                BPlay.BackColor = Color.Green;
-                BPlay.Text = "Start Play";
-            }           
-
-        }
     }
 }
