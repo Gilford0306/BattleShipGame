@@ -20,7 +20,9 @@ namespace BattleShipServerConsole.Classes
         {
 
             byte[] bytes = new byte[1024];
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+            IPAddress ipAddress = ipHostInfo.AddressList[4];
+            //IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
@@ -168,7 +170,13 @@ namespace BattleShipServerConsole.Classes
                                     {
                                         Program.loggedNicks.Add(enemyNick, Program.loggedplayingNicks[enemyNick]);
                                         Program.loggedplayingNicks.Remove(enemyNick);
-                                        Send(Program.loggedNicks[enemyNick], ((char)1).ToString() + " <EOF>");
+                                        Send(Program.loggedNicks[enemyNick], ((char)18).ToString() + " <EOF>");
+                                        using (MyApplicationContext context = new MyApplicationContext())
+                                        {
+                                            context.Moves.Add(new Move() { Description = $"{nick} is win", Date = DateTime.Now.ToString() });
+                                            context.SaveChanges();
+                                        }
+                                        break;
                                     }
                                 }
                                 state.buffer = new byte[1024];
@@ -320,13 +328,13 @@ namespace BattleShipServerConsole.Classes
                             }
                         case 6://Shot
                             {
-                                enemyNick = parameters[1];
+                                string Nick = parameters[1];
                                 string x = parameters[2];
                                 string y = parameters[3];
-                                if (Program.loggedplayingNicks.ContainsKey(enemyNick))
+                                if (Program.loggedplayingNicks.ContainsKey(Nick))
                                 {
                                     string message = ((char)6).ToString() + " " + x + " " + y + " <EOF>";
-                                    Send(Program.loggedplayingNicks[enemyNick], message);
+                                    Send(Program.loggedplayingNicks[Nick], message);
                                 }
 
                                 char fieldy = (char)(65 + int.Parse(y));

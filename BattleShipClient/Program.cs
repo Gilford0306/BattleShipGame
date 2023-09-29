@@ -258,8 +258,8 @@ namespace BattleShipClient
                                 }; main.Invoke(inv);
                                 break;
                             }
-                        //EndGame
-                        case (char)1:
+                        //WinGame
+                        case (char)18:
                             {
                                 MethodInvoker inv = delegate
                                 {
@@ -274,7 +274,7 @@ namespace BattleShipClient
                                 }; main.Invoke(inv);
                                 break;
                             }
-                        //Результат 
+                        //loseGame
                         case (char)6:
                             {
                                 MethodInvoker inv = delegate

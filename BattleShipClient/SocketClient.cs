@@ -23,16 +23,7 @@ namespace BattleShipClient
             {
                 socket.Connect(serverRemoteEP);
             }
-            //catch (ArgumentNullException ane)
-            //{
-            //    Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-            //    throw;
-            //}
-            //catch (SocketException se)
-            //{
-            //    Console.WriteLine("SocketException : {0}", se.ToString());
-            //    throw;
-            //}
+
             catch (Exception e)
             {
                 Console.WriteLine("Unexpected exception : {0}", e.ToString());

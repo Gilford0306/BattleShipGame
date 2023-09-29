@@ -27,6 +27,7 @@ namespace BattleShipClient
         public bool[,] yourMapTmp = new bool[10, 10];
         public bool[,] enemyMap = new bool[10, 10];
         List<Button> selectedButtons = new List<Button>();
+
         //======================================== Prepare logic
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -240,16 +241,16 @@ namespace BattleShipClient
             int y1 = y;
             if (x1 < 10)
             {
-                if (yourMap[x1, y1] == true) //check if neighbour has neighbour
+                if (yourMap[x1, y1] == true) 
                 {
                     return 1 + IsDownNeighbour(x1, y1);
                 }
-                else //no neigbour
+                else 
                 {
                     return 0;
                 }
             }
-            else //no neighbour
+            else 
             {
                 return 0;
             }
@@ -426,36 +427,35 @@ namespace BattleShipClient
             bool checkResult = false;
             Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
             checkResult=Check1CellShip();
-            //if (checkResult==false)
-            //{
-            //    MessageBox.Show("You have set wrong number 1 cell ship", "Error");
-            //    return;
-            //}
-            //checkResult = Check2CellShip();
-            //if (checkResult == false)
-            //{
-            //    MessageBox.Show("You have set wrong number 2 cell ship", "Error");
-            //    return;
-            //}
-            //checkResult = Check3CellShip();
-            //if (checkResult == false)
-            //{
-            //    MessageBox.Show("You have set wrong number 3 cell ship", "Error");
-            //    return;
-            //}
-            //checkResult = Check4CellShip();
-            //if (checkResult == false)
-            //{
-            //    MessageBox.Show("You have set wrong number 4 cell ship", "Error");
-            //    return;
-            //}
+            if (checkResult == false)
+            {
+                MessageBox.Show("You have set wrong number 1 cell ship", "Error");
+                return;
+            }
+            checkResult = Check2CellShip();
+            if (checkResult == false)
+            {
+                MessageBox.Show("You have set wrong number 2 cell ship", "Error");
+                return;
+            }
+            checkResult = Check3CellShip();
+            if (checkResult == false)
+            {
+                MessageBox.Show("You have set wrong number 3 cell ship", "Error");
+                return;
+            }
+            checkResult = Check4CellShip();
+            if (checkResult == false)
+            {
+                MessageBox.Show("You have set wrong number 4 cell ship", "Error");
+                return;
+            }
 
             char comm = (char)0;
             string message = comm + " " + Program.userLogin + " " + Program.enemyNick + " <EOF>";
             Program.client.Send(message);
             BPlay.Text = "Wait opponent ....";
             enemyGiveUpBeforeStart = true;
-            //Receive answer in Program's thread
             clickedButton.Enabled = false;
         }
         public void GetShotAndResponse(int x, int y)
