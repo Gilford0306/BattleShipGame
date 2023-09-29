@@ -16,7 +16,7 @@ namespace BattleShipClient
         public bool enemyGiveUpBeforeStart = false;
         public bool normalEnd = false;
         public Button clickedButton;
-        public int masts = 20;
+        public int sphips = 20;
         public FormGame(string enemyNick)
         {
             InitializeComponent();
@@ -36,7 +36,7 @@ namespace BattleShipClient
             timer1.Start();
 
         }
-        private void timer1_Tick(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)/// play button green
         {
 
             bool checkResult = false;
@@ -105,7 +105,7 @@ namespace BattleShipClient
                         button.Font = new Font(button.Font.FontFamily, 6);
                         if (name == "P1")
                         {
-                            button.Click += new System.EventHandler(this.setMastbuttonClick);
+                            button.Click += new System.EventHandler(this.yourFieldButtonClick);
                         }
                         else if (name == "P2")
                         {
@@ -115,13 +115,13 @@ namespace BattleShipClient
                     else
                     {
                         button.Enabled = false;
-                        if (i == 0 && j > 0) //letters: A, B, ..., J
+                        if (i == 0 && j > 0) // A, B, С
                         {
                             button.Text = ((char)(64 + j)).ToString();
                             button.Name = ((char)(64 + j)).ToString();
                             button.Font = new Font(button.Font.FontFamily, 6);
                         }
-                        else if (i != 0 || j != 0) // digits: 1, 2, ..., 10
+                        else if (i != 0 || j != 0) // 1, 2, 3
                         {
                             button.Text = i.ToString();
                             button.Name = "L" + i.ToString();
@@ -143,7 +143,7 @@ namespace BattleShipClient
                 }
             }
         }
-        public void PrepareBattleField()
+        public void PrepareEnemyField()
         {
 
             PanelYourShip.Visible = false;
@@ -159,20 +159,39 @@ namespace BattleShipClient
             PMast.Visible = true;// field enemy
             Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
         }
-        private void DisableOrEnableButtonIfExists(Panel panel, int x1, int y1, bool DisOrEn)
+
+
+        void yourFieldButtonClick(object sender, EventArgs e)
         {
-            Button button;
-            button = (Button)panel.Controls.Find(x1.ToString() + y1.ToString(), true).FirstOrDefault();
-            if (button != null)
+            var clickedButton = (Button)sender;
+            int x = Int32.Parse(clickedButton.Name.Substring(0, 1)); 
+            int y = Int32.Parse(clickedButton.Name.Substring(1, 1)); 
+            int leftShip = IsLeftNeighbour(x, y);
+            int rightShip = IsRightNeighbour(x, y);
+            int upShip = IsUpNeighbour(x, y);
+            int downShip = IsDownNeighbour(x, y);
+
+            //Select or not
+            if (clickedButton.BackColor != Color.MediumBlue) //if button not selected
             {
-                if (DisOrEn == false)
+                if ((leftShip + rightShip < 4) && (upShip + downShip < 4))
                 {
-                    button.Enabled = false;
+                    clickedButton.BackColor = Color.MediumBlue;
+                    selectedButtons.Add(clickedButton);
+                    DisableOrEnableAllCorners((Panel)clickedButton.Parent, x, y, false);
+                    yourMap[x, y] = true;
                 }
-                else
+            }
+            else
+            {
+                clickedButton.BackColor = Color.Transparent;
+                DisableOrEnableAllCorners((Panel)clickedButton.Parent, x, y, true);
+                selectedButtons.Remove(clickedButton);
+                foreach (Button btn in selectedButtons)
                 {
-                    button.Enabled = true;
+                    DisableOrEnableAllCorners((Panel)btn.Parent, Int32.Parse(btn.Name[0].ToString()), Int32.Parse(btn.Name[1].ToString()), false);
                 }
+                yourMap[x, y] = false;
             }
         }
         private int IsLeftNeighbour(int x, int y)
@@ -181,16 +200,16 @@ namespace BattleShipClient
             int y1=y-1;
             if (y1>-1)
             {
-                if (yourMap[x1,y1]==true) //check if neighbour has neighbour
+                if (yourMap[x1,y1]==true) 
                 {
                     return 1 + IsLeftNeighbour(x1, y1);
                 }
-                else //no neigbour
+                else 
                 {
                     return 0;
                 }
             }
-            else //no neighbour
+            else 
             {
                 return 0;
             }
@@ -201,16 +220,16 @@ namespace BattleShipClient
             int y1 = y + 1;
             if (y1 < 10)
             {
-                if (yourMap[x1, y1] == true) //check if neighbour has neighbour
+                if (yourMap[x1, y1] == true) 
                 {
                     return 1 + IsRightNeighbour(x1, y1);
                 }
-                else //no neigbour
+                else 
                 {
                     return 0;
                 }
             }
-            else //no neighbour
+            else 
             {
                 return 0;
             }
@@ -221,16 +240,16 @@ namespace BattleShipClient
             int y1 = y;
             if (x1 > -1)
             {
-                if (yourMap[x1, y1] == true) //check if neighbour has neighbour
+                if (yourMap[x1, y1] == true) 
                 {
                     return 1 + IsUpNeighbour(x1, y1);
                 }
-                else //no neigbour
+                else 
                 {
                     return 0;
                 }
             }
-            else //no neighbour
+            else 
             {
                 return 0;
             }
@@ -262,12 +281,28 @@ namespace BattleShipClient
             DisableOrEnableButtonIfExists(panel, x+1, y+1, trueOrFalse);
             DisableOrEnableButtonIfExists(panel, x+1, y-1, trueOrFalse);
         }
+        private void DisableOrEnableButtonIfExists(Panel panel, int x1, int y1, bool Exist)
+        {
+            Button button;
+            button = (Button)panel.Controls.Find(x1.ToString() + y1.ToString(), true).FirstOrDefault();
+            if (button != null)
+            {
+                if (Exist == false)
+                {
+                    button.Enabled = false;
+                }
+                else
+                {
+                    button.Enabled = true;
+                }
+            }
+        }
         bool Check1CellShip()
         {
-            int leftNo = 0;
-            int rightNo = 0;
-            int upNo = 0;
-            int downNo = 0;
+            int leftShip = 0;
+            int rightShip = 0;
+            int upShip = 0;
+            int downShip = 0;
 
             int counter = 0;
             for (int i = 0; i < 10; i++)
@@ -276,11 +311,11 @@ namespace BattleShipClient
                 {
                     if (yourMap[i, j] == true)
                     {
-                        leftNo = IsLeftNeighbour(i, j);
-                        rightNo = IsRightNeighbour(i, j);
-                        upNo = IsUpNeighbour(i, j);
-                        downNo = IsDownNeighbour(i, j);
-                        if (leftNo==0 && rightNo==0 && downNo ==0 && upNo==0)
+                        leftShip = IsLeftNeighbour(i, j);
+                        rightShip = IsRightNeighbour(i, j);
+                        upShip = IsUpNeighbour(i, j);
+                        downShip = IsDownNeighbour(i, j);
+                        if (leftShip==0 && rightShip==0 && downShip ==0 && upShip==0)
                         {
                             yourMapTmp[i, j] = true;
                             counter++;
@@ -295,10 +330,10 @@ namespace BattleShipClient
         }
         bool Check2CellShip()
         {
-            int leftNo = 0;
-            int rightNo = 0;
-            int upNo = 0;
-            int downNo = 0;
+            int leftShip = 0;
+            int rightShip = 0;
+            int upShip = 0;
+            int downShip = 0;
             int counter = 0;
             for (int i = 0; i < 10; i++)
             {
@@ -307,19 +342,19 @@ namespace BattleShipClient
                     if (yourMap[i, j] == true)
                     {
                         if (yourMapTmp[i, j] == true) continue;
-                        downNo = IsDownNeighbour(i, j);
-                        upNo = IsUpNeighbour(i, j);
-                        if (downNo == 1 && upNo==0)
+                        downShip = IsDownNeighbour(i, j);
+                        upShip = IsUpNeighbour(i, j);
+                        if (downShip == 1 && upShip==0)
                         {
                             yourMapTmp[i, j] = true;
                             yourMapTmp[i + 1, j] = true;
                             counter++;
                         }
-                        else if (downNo==0 && upNo==0)
+                        else if (downShip==0 && upShip==0)
                         {
-                            rightNo = IsRightNeighbour(i, j);
-                            leftNo = IsLeftNeighbour(i, j);
-                            if (rightNo==1 && leftNo==0)
+                            rightShip = IsRightNeighbour(i, j);
+                            leftShip = IsLeftNeighbour(i, j);
+                            if (rightShip==1 && leftShip==0)
                             {
                                 yourMapTmp[i, j] = true;
                                 yourMapTmp[i, j+1] = true;
@@ -335,10 +370,10 @@ namespace BattleShipClient
         }
         bool Check3CellShip()
         {
-            int leftNo = 0;
-            int rightNo = 0;
-            int upNo = 0;
-            int downNo = 0;
+            int leftShip = 0;
+            int rightShip = 0;
+            int upShip = 0;
+            int downShip = 0;
             int counter = 0;
             for (int i = 0; i < 10; i++)
             {
@@ -347,20 +382,20 @@ namespace BattleShipClient
                     if (yourMap[i, j] == true)
                     {
                         if (yourMapTmp[i, j] == true) continue;
-                        downNo = IsDownNeighbour(i, j);
-                        upNo = IsUpNeighbour(i, j);
-                        if (downNo == 2 && upNo == 0)
+                        downShip = IsDownNeighbour(i, j);
+                        upShip = IsUpNeighbour(i, j);
+                        if (downShip == 2 && upShip == 0)
                         {
                             yourMapTmp[i, j] = true;
                             yourMapTmp[i + 1, j] = true;
                             yourMapTmp[i + 2, j] = true;
                             counter++;
                         }
-                        else if (downNo == 0 && upNo == 0)
+                        else if (downShip == 0 && upShip == 0)
                         {
-                            rightNo = IsRightNeighbour(i, j);
-                            leftNo = IsLeftNeighbour(i, j);
-                            if (rightNo == 2 && leftNo == 0)
+                            rightShip = IsRightNeighbour(i, j);
+                            leftShip = IsLeftNeighbour(i, j);
+                            if (rightShip == 2 && leftShip == 0)
                             {
                                 yourMapTmp[i, j] = true;
                                 yourMapTmp[i, j + 1] = true;
@@ -377,10 +412,10 @@ namespace BattleShipClient
         }
         bool Check4CellShip()
         {
-            int leftNo = 0;
-            int rightNo = 0;
-            int upNo = 0;
-            int downNo = 0;
+            int leftShip = 0;
+            int rightShip = 0;
+            int upShip = 0;
+            int downShip = 0;
             int counter = 0;
             for (int i = 0; i < 10; i++)
             {
@@ -389,9 +424,9 @@ namespace BattleShipClient
                     if (yourMap[i, j] == true)
                     {
                         if (yourMapTmp[i, j] == true) continue;
-                        downNo = IsDownNeighbour(i, j);
-                        upNo = IsUpNeighbour(i, j);
-                        if (downNo == 3 && upNo == 0)
+                        downShip = IsDownNeighbour(i, j);
+                        upShip = IsUpNeighbour(i, j);
+                        if (downShip == 3 && upShip == 0)
                         {
                             yourMapTmp[i, j] = true;
                             yourMapTmp[i + 1, j] = true;
@@ -399,11 +434,11 @@ namespace BattleShipClient
                             yourMapTmp[i + 3, j] = true;
                             counter++;
                         }
-                        else if (downNo == 0 && upNo == 0)
+                        else if (downShip == 0 && upShip == 0)
                         {
-                            rightNo = IsRightNeighbour(i, j);
-                            leftNo = IsLeftNeighbour(i, j);
-                            if (rightNo == 3 && leftNo == 0)
+                            rightShip = IsRightNeighbour(i, j);
+                            leftShip = IsLeftNeighbour(i, j);
+                            if (rightShip == 3 && leftShip == 0)
                             {
                                 yourMapTmp[i, j] = true;
                                 yourMapTmp[i, j + 1] = true;
@@ -419,11 +454,10 @@ namespace BattleShipClient
             if (counter < 1) return false;
             return true;
         }
-        //======================================== Game logic
         void playbuttonClick(object sender, EventArgs e)
         {
             clickedButton = (Button)sender;
-            //check masts
+            //check sphips
             bool checkResult = false;
             Array.Clear(yourMapTmp, 0, yourMapTmp.Length);
             checkResult=Check1CellShip();
@@ -458,6 +492,7 @@ namespace BattleShipClient
             enemyGiveUpBeforeStart = true;
             clickedButton.Enabled = false;
         }
+        //======================================== Game logic
         public void GetShotAndResponse(int x, int y)
         {
             Button button;
@@ -469,16 +504,10 @@ namespace BattleShipClient
             {
                 yourMapTmp[x, y] = true;
 
-                //else
-                masts--;
-
-                //If ship to sink
-                //Send SinkShip
-                //yourMapTmp[x, y] = true;            
-                //Change color on your map
-                button.BackColor = Color.Tomato;
+                sphips--;
+                button.BackColor = Color.Red;
                 Application.DoEvents();
-                if (masts == 0)
+                if (sphips == 0)
                 {
                     Application.DoEvents();
                     return;
@@ -503,68 +532,24 @@ namespace BattleShipClient
             }
             Application.DoEvents();
         }
-        void setMastbuttonClick(object sender, EventArgs e)
-        {
-            var clickedButton = (Button)sender;//detect which button has been pressed
-            int x = Int32.Parse(clickedButton.Name.Substring(0, 1)); //get x button co-ordinates
-            int y = Int32.Parse(clickedButton.Name.Substring(1, 1)); //get y button co-ordinates
-            int leftNo = IsLeftNeighbour(x, y);
-            int rightNo = IsRightNeighbour(x, y);
-            int upNo = IsUpNeighbour(x, y);
-            int downNo = IsDownNeighbour(x, y);
 
-            //Select or not
-            if (clickedButton.BackColor != Color.MediumBlue) //if button wasn't selected
-            {
-                //check left neigbours
-                if ((leftNo + rightNo < 4) && (upNo + downNo < 4))
-                {
-                    clickedButton.BackColor = Color.MediumBlue;
-                    //add to dictionary
-                    selectedButtons.Add(clickedButton);
-                    //disable corners
-                    DisableOrEnableAllCorners((Panel)clickedButton.Parent, x, y, false);
-                    //set true in game table
-                    yourMap[x, y] = true;
-                }
-            }
-            else
-            {
-                clickedButton.BackColor = Color.Transparent;
-                //enable corners
-                DisableOrEnableAllCorners((Panel)clickedButton.Parent, x, y, true);
-                //remove from dictionary
-                selectedButtons.Remove(clickedButton);
-                //disable corners for buttons in dictionary
-                foreach (Button btn in selectedButtons)
-                {
-                    DisableOrEnableAllCorners((Panel)btn.Parent, Int32.Parse(btn.Name[0].ToString()), Int32.Parse(btn.Name[1].ToString()), false);
-                }
-                //set false in game table
-                yourMap[x, y] = false;
-            }
-            //Check
-        }
         void buttonClick(object sender, EventArgs e)
         {
-            clickedButton = (Button)sender;//detect which button has been pressed
+            clickedButton = (Button)sender;
             clickedButton.Enabled = false;
-            int x = Int32.Parse(clickedButton.Name.Substring(0, 1)); //get x button co-ordinates
-            int y = Int32.Parse(clickedButton.Name.Substring(1, 1)); //get y button co-ordinates
+            int x = Int32.Parse(clickedButton.Name.Substring(0, 1)); 
+            int y = Int32.Parse(clickedButton.Name.Substring(1, 1)); 
             //Send Shot
             string message = "";
             message = (char)6 + " " + enemyNick + " " + x.ToString() +" " + y.ToString() + " <EOF>";
-            Program.client.Send(message);
-            //Get answer form Program's thread       
+            Program.client.Send(message);    
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (enemyGiveUpBeforeStart == false)
             {
-                //User must send GiveUp Communique
                 char comm = (char)2;
-                //<Who gives up> <with whom he plays>
                 string message = comm + " " + Program.userLogin + " " + Program.enemyNick + " <EOF>";
                 Program.client.Send(message);
 
@@ -572,11 +557,9 @@ namespace BattleShipClient
             else if (normalEnd == false)
             {
                 char comm = (char)15;
-                //<Who gives up> <with whom he plays>
                 string message = comm + " " + Program.userLogin + " " + Program.enemyNick + " <EOF>";
                 Program.client.Send(message);
             }
-            //User Go to EnemySelectionPanel
             DialogResult = DialogResult.Yes;
         }
 

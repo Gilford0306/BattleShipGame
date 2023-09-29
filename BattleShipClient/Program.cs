@@ -26,7 +26,6 @@ namespace BattleShipClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
             userLogin = "";
             serverAddress = "";
 
@@ -72,8 +71,6 @@ namespace BattleShipClient
                     switch (answer[0])
                     {
 
-                        //EnemySelection
-                        //SendEnemies
                         case (char)12:
                             {
                                 List<string> onlineEnemyListTmp = new List<string>();
@@ -191,7 +188,7 @@ namespace BattleShipClient
                                 {
                                     //Hide button
                                     main.clickedButton.Visible = false;
-                                    main.PrepareBattleField();
+                                    main.PrepareEnemyField();
                                     Application.DoEvents();
                                     ((Panel)main.Controls.Find("P2", true).FirstOrDefault()).Enabled = false;
                                 }; main.Invoke(inv);
@@ -204,7 +201,7 @@ namespace BattleShipClient
                                 {
                                     //Hide button
                                     main.clickedButton.Visible = false;
-                                    main.PrepareBattleField();
+                                    main.PrepareEnemyField();
                                     ((Panel)main.Controls.Find("P2", true).FirstOrDefault()).Enabled = true;
                                 }; main.Invoke(inv);
                                 break;
@@ -287,7 +284,7 @@ namespace BattleShipClient
                                         x = Int32.Parse(answer.Split(' ')[1]);
                                         y = Int32.Parse(answer.Split(' ')[2]);
                                         main.GetShotAndResponse(x, y);
-                                        if (main.masts == 0)
+                                        if (main.sphips == 0)
                                         {
                                             ((Panel)main.Controls.Find("P2", true).FirstOrDefault()).Enabled = false;
                                             message = (char)1 + " " + userLogin + " " + enemyNick + " <EOF>";

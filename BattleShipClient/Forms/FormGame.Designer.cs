@@ -242,7 +242,7 @@ namespace BattleShipClient
             this.PMast.Controls.Add(this.BMastx44);
             this.PMast.Controls.Add(this.BMastx42);
             this.PMast.Controls.Add(this.Lx3);
-            this.PMast.Location = new System.Drawing.Point(266, 293);
+            this.PMast.Location = new System.Drawing.Point(279, 293);
             this.PMast.Name = "PMast";
             this.PMast.Size = new System.Drawing.Size(96, 226);
             this.PMast.TabIndex = 26;

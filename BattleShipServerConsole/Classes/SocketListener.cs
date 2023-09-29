@@ -187,13 +187,9 @@ namespace BattleShipServerConsole.Classes
                             }
                         case 2: //Give up
                             {
-                                //Get nick
                                 whoSent = parameters[1];
-                                //Get nick
                                 whomSent = parameters[2];
-                                //Check if whomSent has sent message earlier
 
-                                //Check if whom+who is on whowhomSentStart & whowhomSentGiveUp
                                 if (!Program.whowhomSentStart.Contains(whomSent + whoSent) && !Program.whowhomSentGiveUp.Contains(whomSent + whoSent))
                                 {
                                     Program.whowhomSentGiveUp.Add(whoSent + whomSent);
@@ -211,6 +207,7 @@ namespace BattleShipServerConsole.Classes
                                     handler.BeginReceive(state.buffer, 0, ReadObject.BufferSize, 0,
                                     new AsyncCallback(ReadCallback), state);
                                     break;
+
                                 }
                                 else if (Program.whowhomSentStart.Contains(whomSent + whoSent))//Check if whom+who is on whowhomSentStart
                                 {
@@ -605,6 +602,14 @@ namespace BattleShipServerConsole.Classes
                                 state.sb = new StringBuilder();
                                 handler.BeginReceive(state.buffer, 0, ReadObject.BufferSize, 0,
                                 new AsyncCallback(ReadCallback), state);
+                                using (MyApplicationContext context = new MyApplicationContext())
+                                {
+                                    if (parameters[1] == "Player1")
+                                        context.Moves.Add(new Move() { Description = $"Player 2 is give up ", Date = DateTime.Now.ToString() });
+                                    else
+                                        context.Moves.Add(new Move() { Description = $"Player 1 is give up ", Date = DateTime.Now.ToString() });
+                                    context.SaveChanges();
+                                }
                                 break;
                             }
                     }
